@@ -1,0 +1,19 @@
+//
+// Responsive: Tablet to desktop
+// --------------------------------------------------
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+	// Fixed grid
+	@include gridSystem(fixed, $gridColumns, $gridColumnWidth768, $gridGutterWidth768);
+
+	// Fluid grid
+	@include gridSystem(fluid, $gridColumns, $fluidGridColumnWidth768, $fluidGridGutterWidth768);
+	
+	// Table grid
+	@include gridSystem(table, $gridColumns, $gridColumnWidth768, $gridGutterWidth768);
+
+	// Input grid
+	@include gridSystem(input, $gridColumns, $gridColumnWidth768, $gridGutterWidth768);
+}
