@@ -265,8 +265,8 @@ $gridRowWidth768:         ($gridColumns * $gridColumnWidth768) + ($gridGutterWid
 
 // Fluid grid
 // -------------------------
-$fluidGridColumnWidth:    ($gridColumnWidth/$gridRowWidth) * 1%;
-$fluidGridGutterWidth:    ($gridGutterWidth/$gridRowWidth) * 1%;
+$fluidGridColumnWidth:    ($gridColumnWidth/$gridRowWidth) * 100 * 1%;
+$fluidGridGutterWidth:    ($gridGutterWidth/$gridRowWidth) * 100 * 1%;
 
 // 1200px min
 $fluidGridColumnWidth1200:     ($gridColumnWidth1200/$gridRowWidth1200) * 100 * 1%;
