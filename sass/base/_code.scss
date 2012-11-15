@@ -8,8 +8,7 @@
 code,
 pre {
 	padding: 0 3px 2px;
-	//#font > #family > .monospace;
-	font-size: $baseFontSize - 2;
+	@include font-shorthand(normal, $baseFontSize - 2, 1, monospace);
 	color: $grayDark;
 	@include border-radius(3px);
 }
