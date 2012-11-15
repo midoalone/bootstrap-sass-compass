@@ -2,7 +2,6 @@
 // Alerts
 // --------------------------------------------------
 
-
 // Base styles
 // -------------------------
 
@@ -12,7 +11,7 @@
 	text-shadow: 0 1px 0 rgba(255,255,255,.5);
 	background-color: $warningBackground;
 	border: 1px solid $warningBorder;
-	@include border-radius(4px);
+	@include border-radius($baseBorderRadius);
 	color: $warningText;
 	h4 {
 		margin: 0;
@@ -40,6 +39,7 @@
 	border-color: $errorBorder;
 	color: $errorText;
 }
+
 .alert-info {
 	background-color: $infoBackground;
 	border-color: $infoBorder;
@@ -53,11 +53,11 @@
 .alert-block {
 	padding-top: 14px;
 	padding-bottom: 14px;
-	& > p,
-	& > ul {
+	> p,
+	> ul {
 		margin-bottom: 0;
 	}
-	& p + p {
+	p + p {
 		margin-top: 5px;
 	}
 }

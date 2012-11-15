@@ -4,20 +4,19 @@
 
 
 .fade {
-  opacity: 0;
-  @include single-transition(opacity .15s linear);
-  &.in {
-    opacity: 1;
-  }
+	@include opacity(0);
+	@include transition(opacity .15s linear);
+	&.in {
+		@include opacity(1);
+	}
 }
 
 .collapse {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  overflow: visible \9;
-  @include single-transition(height .35s ease);
-  &.in {
-    height: auto;
-  }
+	position: relative;
+	height: 0;
+	overflow: hidden;
+	@include transition(height .35s ease);
+	&.in {
+		height: auto;
+	}
 }

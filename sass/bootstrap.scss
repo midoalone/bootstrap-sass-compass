@@ -1,20 +1,17 @@
 /*!
- * Bootstrap v2.1.0
+ * Bootstrap v2.2.1
  *
  * Copyright 2012 Twitter, Inc
  * Licensed under the Apache License v2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
- * Converted and Modified for SASS/Compass by @klangley - http://ubergeni.us
  */
 
 @import "compass/css3";
 
-// Core variables
+// Core variables and mixins
 @import "base/_variables.scss"; // Modify this for custom colors, font-sizes, etc
-
-// Core mixins
 @import "base/_mixins.scss";
 
 // CSS Reset
@@ -57,6 +54,7 @@
 
 // Components: Misc
 @import "base/_thumbnails.scss";
+@import "base/_media.scss";
 @import "base/_labels-badges.scss";
 @import "base/_progress-bars.scss";
 @import "base/_accordion.scss";

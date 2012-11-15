@@ -16,4 +16,7 @@
 
 	// Input grid
 	@include gridSystem(input, $gridColumns, $gridColumnWidth768, $gridGutterWidth768);
+
+	// No need to reset .thumbnails here since it's the same @gridGutterWidth
+
 }

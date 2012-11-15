@@ -57,7 +57,7 @@
 // instead of the 1 space in other browsers.
 @mixin ie7-restore-left-whitespace() {
 	*margin-left: .3em;
-	
+
 	&:first-child {
 		*margin-left: 0;
 	}
@@ -114,18 +114,37 @@
 
 // FONTS
 // --------------------------------------------------
-@mixin font-shorthand($weight: normal, $size: 14px, $lineHeight: 20px, $family: false) {
-	font-size: $size;
-	font-weight: $weight;
-	line-height: $lineHeight;
-	@if $family == serif {
-		font-family: $serifFontFamily;
-		} @else if $family == sans-serif {
-		font-family: $sansSerifFontFamily;
-		} @else if $family == monospace {
-		font-family: $monoFontFamily;
-	}
-}
+
+// #font {
+// 	#family {
+// 		.serif() {
+// 			font-family: @serifFontFamily;
+// 		}
+// 		.sans-serif() {
+// 			font-family: @sansFontFamily;
+// 		}
+// 		.monospace() {
+// 			font-family: @monoFontFamily;
+// 		}
+// 	}
+// 	.shorthand(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+// 		font-size: @size;
+// 		font-weight: @weight;
+// 		line-height: @lineHeight;
+// 	}
+// 	.serif(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+// 		#font > #family > .serif;
+// 		#font > .shorthand(@size, @weight, @lineHeight);
+// 	}
+// 	.sans-serif(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+// 		#font > #family > .sans-serif;
+// 		#font > .shorthand(@size, @weight, @lineHeight);
+// 	}
+// 	.monospace(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+// 		#font > #family > .monospace;
+// 		#font > .shorthand(@size, @weight, @lineHeight);
+// 	}
+// }
 
 
 // FORMS
@@ -135,7 +154,7 @@
 @mixin input-block-level {
 	display: block;
 	width: 100%;
-	min-height: 30px;        // Make inputs at least the height of their button counterpart
+	min-height: $inputHeight; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
 	@include box-sizing(border-box); // Makes inputs behave like true block-level elements
 }
 
@@ -156,11 +175,14 @@
 	select,
 	textarea {
 		color: $textColor;
+	}
+	input,
+	select,
+	textarea {
 		border-color: $borderColor;
 		@include box-shadow(inset 0 1px 1px rgba(0,0,0,.075)); // Redeclare so transitions work
 		&:focus {
 			border-color: darken($borderColor, 10%);
-			// Write out in full since the lighten() function isn't easily escaped
 			@include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px lighten($borderColor, 20%));
 		}
 	}
@@ -173,6 +195,15 @@
 	}
 }
 
+// User select
+// For selecting text on the page
+@mixin user-select($select) {
+	$select: unquote($select);
+	@include experimental(user-select, $select,
+		-moz, -webkit, not -o, not -ms, -khtml, official
+	);
+}
+
 // Resize anything
 @mixin resizable($direction) {
 	resize: $direction; // Options: horizontal, vertical, both
@@ -181,12 +212,8 @@
 
 // CSS3 Content Columns
 @mixin content-columns($columnCount, $columnGap: $gridGutterWidth) {
-	-webkit-column-count: $columnCount;
-	-moz-column-count: $columnCount;
-	column-count: $columnCount;
-	-webkit-column-gap: $columnGap;
-	-moz-column-gap: $columnGap;
-	column-gap: $columnGap;
+	@include column-count($columnCount);
+	@include column-gap($columnGap);
 }
 
 // BACKGROUNDS
@@ -196,13 +223,16 @@
 @mixin translucent-background($color: $white, $alpha: 1) {
 	background-color: hsla(hue($color), saturation($color), lightness($color), $alpha);
 }
+
 @mixin translucent-border($color, $white, $alpha : 1){
 	border-color: hsla(hue($color), saturation($color), lightness($color), $alpha);
 	@include background-clip(padding-box);
 }
 
 // Gradient Bar Colors for buttons and alerts
-@mixin gradientBar($primaryColor, $secondaryColor) {
+@mixin gradientBar($primaryColor, $secondaryColor, $textColor: $white, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+	color: $textColor;
+	@include text-shadow($textShadow);
 	@include gradient-vertical($primaryColor, $secondaryColor);
 	border-color: $secondaryColor $secondaryColor darken($secondaryColor, 15%);
 	border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
@@ -211,69 +241,43 @@
 // Gradients
 @mixin gradient-horizontal($startColor: #555, $endColor: #333) {
 	background-color: $endColor;
-	background-image: -moz-linear-gradient(left, $startColor, $endColor); // FF 3.6+
-	background-image: -ms-linear-gradient(left, $startColor, $endColor); // IE10
-	background-image: -webkit-gradient(linear, 0 0, 100% 0, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
-	background-image: -webkit-linear-gradient(left, $startColor, $endColor); // Safari 5.1+, Chrome 10+
-	background-image: -o-linear-gradient(left, $startColor, $endColor); // Opera 11.10
-	background-image: linear-gradient(left, $startColor, $endColor); // Le standard
-	background-repeat: repeat-x;
+	@include background-image(linear-gradient(left, $startColor, $endColor) );
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($startColor)}', endColorstr='#{ie-hex-str($endColor)}', GradientType=1); // IE9 and down
+	background-repeat: repeat-x;
 }
 @mixin gradient-vertical($startColor: #555, $endColor: #333) {
 	background-color: mix($startColor, $endColor, 60%);
-	background-image: -moz-linear-gradient(top, $startColor, $endColor); // FF 3.6+
-	background-image: -ms-linear-gradient(top, $startColor, $endColor); // IE10
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
-	background-image: -webkit-linear-gradient(top, $startColor, $endColor); // Safari 5.1+, Chrome 10+
-	background-image: -o-linear-gradient(top, $startColor, $endColor); // Opera 11.10
-	background-image: linear-gradient(top, $startColor, $endColor); // The standard
-	background-repeat: repeat-x;
+	@include background-image( linear-gradient(top, $startColor, $endColor) ); // The standard
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($startColor)}', endColorstr='#{ie-hex-str($endColor)}', GradientType=0); // IE9 and down
+	background-repeat: repeat-x;
 }
 @mixin gradient-directional($startColor: #555, $endColor: #333, $deg: 45deg) {
 	background-color: $endColor;
+	@include background-image( linear-gradient($deg, $startColor, $endColor) ); // The standard
 	background-repeat: repeat-x;
-	background-image: -moz-linear-gradient($deg, $startColor, $endColor); // FF 3.6+
-	background-image: -ms-linear-gradient($deg, $startColor, $endColor); // IE10
-	background-image: -webkit-linear-gradient($deg, $startColor, $endColor); // Safari 5.1+, Chrome 10+
-	background-image: -o-linear-gradient($deg, $startColor, $endColor); // Opera 11.10
-	background-image: linear-gradient($deg, $startColor, $endColor); // The standard
 }
 @mixin gradient-vertical-three-colors($startColor: #00b3ee, $midColor: #7a43b6, $colorStop: 50%, $endColor: #c3325f) {
 	background-color: mix($midColor, $endColor, 80%);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), color-stop($colorStop, $midColor), to($endColor));
-	background-image: -webkit-linear-gradient($startColor, $midColor $colorStop, $endColor);
-	background-image: -moz-linear-gradient(top, $startColor, $midColor $colorStop, $endColor);
-	background-image: -ms-linear-gradient($startColor, $midColor $colorStop, $endColor);
-	background-image: -o-linear-gradient($startColor, $midColor $colorStop, $endColor);
-	background-image: linear-gradient($startColor, $midColor $colorStop, $endColor);
-	background-repeat: no-repeat;
+	@include background-image( linear-gradient($startColor, $midColor $colorStop, $endColor) );
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($startColor)}', endColorstr='#{ie-hex-str($endColor)}', GradientType=0); // IE9 and down, gets no color-stop at all for proper fallback
+	background-repeat: no-repeat;
 }
 @mixin gradient-radial($innerColor: #555, $outerColor: #333)  {
 	background-color: $outerColor;
-	background-image: -webkit-gradient(radial, center center, 0, center center, 460, from($innerColor), to($outerColor));
-	background-image: -webkit-radial-gradient(circle, $innerColor, $outerColor);
-	background-image: -moz-radial-gradient(circle, $innerColor, $outerColor);
-	background-image: -ms-radial-gradient(circle, $innerColor, $outerColor);
-	background-image: -o-radial-gradient(circle, $innerColor, $outerColor);
+	@include background-image(radial-gradient(circle, $innerColor, $outerColor));
 	background-repeat: no-repeat;
 }
 @mixin gradient-striped($color, $angle: 45deg) {
 	background-color: $color;
-	background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(255,255,255,.15)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255,255,255,.15)), color-stop(.75, rgba(255,255,255,.15)), color-stop(.75, transparent), to(transparent));
-	background-image: -webkit-linear-gradient($angle, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
-	background-image: -moz-linear-gradient($angle, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
-	background-image: -ms-linear-gradient($angle, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
-	background-image: -o-linear-gradient($angle, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
-	background-image: linear-gradient($angle, rgba(255,255,255,.15) 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0));
+	@include background-image(linear-gradient($angle, rgba(255,255,255,.15) 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0)));
 }
+
 // Reset filters for IE
 @mixin reset-filter() {
-	//Hmmmm not sure what to do with this yet.
-	//filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)")); 
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+
+
 
 // COMPONENT MIXINS
 // --------------------------------------------------
@@ -298,19 +302,18 @@
 // Button backgrounds
 // ------------------
 @mixin buttonBackground($startColor, $endColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
-	color: $textColor;
 	// gradientBar will set the background to a pleasing blend of these, to support IE<=9
-	@include gradientBar($startColor, $endColor);
+	@include gradientBar($startColor, $endColor, $textColor, $textShadow);
 	*background-color: $endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 	@include reset-filter();
-	
+
 	// in these cases the gradient won't cover the background, so we override
 	&:hover, &:active, &.active, &.disabled, &[disabled] {
 		color: $textColor;
 		background-color: $endColor;
 		*background-color: darken($endColor, 5%);
 	}
-	
+
 	// IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
 	&:active,
 	&.active {
@@ -325,6 +328,8 @@
 @mixin navbarVerticalAlign($elementHeight) {
 	margin-top: ($navbarHeight - $elementHeight) / 2;
 }
+
+
 
 // Grid System
 // -----------
@@ -350,6 +355,7 @@
 		}
 		[class*="span"] {
 			float: left;
+			min-height: 1px;
 			margin-left: $gutterWidth;
 		}
 		@for $i from 1 through $columns {
@@ -427,5 +433,5 @@
 }
 
 @mixin animate($name: fadeIn, $duration: 1s, $delay: .2s, $function: ease, $mode: both) {
-	@include experimental(animation, $name $duration $delay $function $mode)
+	@include experimental(animation, $name $duration );
 }

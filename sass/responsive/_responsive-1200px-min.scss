@@ -5,27 +5,27 @@
 
 @media (min-width: 1200px) {
 
-  // Fixed grid
-  @include gridSystem(fixed, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
+	// Fixed grid
+	@include gridSystem(fixed, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
 
-  // Fluid grid
-  @include gridSystem(fluid, $gridColumns, $fluidGridColumnWidth1200, $fluidGridGutterWidth1200);
+	// Fluid grid
+	@include gridSystem(fluid, $gridColumns, $fluidGridColumnWidth1200, $fluidGridGutterWidth1200);
 
-  // Table grid
-  @include gridSystem(table, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
+	// Table grid
+	@include gridSystem(table, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
 
-  // Input grid
-  @include gridSystem(input, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
+	// Input grid
+	@include gridSystem(input, $gridColumns, $gridColumnWidth1200, $gridGutterWidth1200);
 
-  // Thumbnails
-  .thumbnails {
-    margin-left: -$gridGutterWidth1200;
-    > li {
-      margin-left: $gridGutterWidth1200;
-    }
-  }
-  .row-fluid .thumbnails {
-    margin-left: 0;
-  }
+	// Thumbnails
+	.thumbnails {
+		margin-left: -$gridGutterWidth1200;
+	}
+	.thumbnails > li {
+		margin-left: $gridGutterWidth1200;
+	}
+	.row-fluid .thumbnails {
+		margin-left: 0;
+	}
 
 }
