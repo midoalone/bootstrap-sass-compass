@@ -26,7 +26,7 @@
 
 // Webkit-style focus
 // ------------------
-@mixin tab-focus() {
+@mixin tab-focus {
 	// Default
 	outline: thin dotted #333;
 	// Webkit
@@ -36,7 +36,7 @@
 
 // Center-align a block level element
 // ----------------------------------
-@mixin center-block() {
+@mixin center-block {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -44,7 +44,7 @@
 
 // IE7 inline-block
 // ----------------
-@mixin ie7-inline-block() {
+@mixin ie7-inline-block {
 	*display: inline; /* IE7 inline-block hack */
 	*zoom: 1;
 }
@@ -55,7 +55,7 @@
 // right version is for icons, which come before. Applying both is ok, but it will
 // mean that space between those elements will be .6em (~2 space characters) in IE7,
 // instead of the 1 space in other browsers.
-@mixin ie7-restore-left-whitespace() {
+@mixin ie7-restore-left-whitespace {
 	*margin-left: .3em;
 
 	&:first-child {
@@ -63,7 +63,7 @@
 	}
 }
 
-@mixin ie7-restore-right-whitespace() {
+@mixin ie7-restore-right-whitespace {
 	*margin-right: .3em;
 }
 
@@ -94,7 +94,7 @@
 // Text overflow
 // -------------------------
 // Requires inline-block or block for proper styling
-@mixin text-overflow() {
+@mixin text-overflow {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -253,7 +253,7 @@
 }
 
 // Reset filters for IE
-@mixin reset-filter() {
+@mixin reset-filter {
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 
@@ -315,7 +315,7 @@
 // -----------
 
 // Centered container element
-@mixin container-fixed() {
+@mixin container-fixed {
 	margin-right: auto;
 	margin-left: auto;
 	@include clearfix();
