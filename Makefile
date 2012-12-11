@@ -22,7 +22,7 @@ build:
 	@echo "Compiling Production SASS with Compass...   ${CHECK} Done"
 	@compass compile -e development --force
 	@echo "Compiling Development SASS with Compass...  ${CHECK} Done"
-	//@cp -f css/bootstrap* ${BOOTSTRAP_DOCS_ASSETS_DIR}/css/
+	#@cp -f css/bootstrap* ${BOOTSTRAP_DOCS_ASSETS_DIR}/css/
 	@node docs/build
 	@cp img/* docs/assets/img/
 	@cp js/*.js docs/assets/js/
